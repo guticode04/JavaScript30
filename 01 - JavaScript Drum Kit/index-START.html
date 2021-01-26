@@ -58,20 +58,27 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  window.addEventListener('keydown', function(e) {
+  // window.addEventListener('keydown', function(e) {
+  //   const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  //   const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  //   // console.log(audio);
+  //   // if no audio stop function from running
+  //   if( !audio ) return;
+  //   // rewinds audio to the start
+  //   audio.currentTime = 0;
+  //   audio.play();
+  //   // console.log(key);
+  //   key.classList.add('playing');
+  //   // key.addClass('playing'); => jQuery
+  // });
+  function playSound(e) {
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
     const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-    // console.log(audio);
-    // if no audio stop function from running
-    if( !audio ) return;
-    // rewinds audio to the start
+    if (!audio) return;
     audio.currentTime = 0;
     audio.play();
-    // console.log(key);
     key.classList.add('playing');
-    // ^ in jQuery
-    // key.addClass('playing');
-  });
+  }
   
   function removeTransitoin(e) {
     // skip if it's not a transform
@@ -82,7 +89,8 @@
 
   // Node List 
   const keys = document.querySelectorAll('.key');
-  keys.forEach( key => key.addEventListener( 'transitionend', removeTransitoin ) );
+  keys.forEach( key => key.addEventListener('transitionend', removeTransitoin));
+  window.addEventListener('keydown', playSound);
 </script>
 
 
