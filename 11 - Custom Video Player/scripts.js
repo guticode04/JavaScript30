@@ -21,29 +21,38 @@ function togglePlay() {
       const method = video.paused ? 'play' : 'pause';
       video[method]();
    */
-}
+};
 
 function updateButton() {
    const icon = this.paused ? '►' : '❚ ❚';
    toggle.textContent = icon;
 
-}
+};
 
 function skip() {
    // console.log(this.dataset.skip);
    video.currentTime += parseFloat(this.dataset.skip);
-}
+};
 
 function handleRangeUpdate() {
    video[this.name] = this.value;
    // console.log(this.name);
    // console.log(this.value);
-}
+};
 
 
 function handleProgress() {
    const percent = (video.currentTime / video.duration) * 100;
    progressBar.style.flexBasis = `${percent}%`;
+};
+
+function scrub(e) {
+   // for clicking
+   const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
+   video.currentTime = scrubTime;
+   // console.log(e);
+
+
 }
 
 // Hook up the event listners
@@ -58,3 +67,16 @@ toggle.addEventListener('click', togglePlay);
 skipButtons.forEach(button => button.addEventListener('click', skip));
 
 ranges.forEach( range => range.addEventListener('change', handleRangeUpdate));
+
+let mouseDown = false;
+progress.addEventListener('click', scrub);
+// progress.addEventListener('mousemove', () => {
+//    if(mouseDown) {
+//       scrub();
+//    }
+// });
+
+// if mouseDown is false it will run scrub if not just returns false
+progress.addEventListener('mousemove', (e) => mouseDown && scrub(e));
+progress.addEventListener('mousedown', () => mouseDown = true);
+progress.addEventListener('mousemove', () => mouseDown = false);
