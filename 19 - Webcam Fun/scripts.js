@@ -8,7 +8,9 @@ function getVideo() {
    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(localMediaStream => {
          console.log(localMediaStream);
-         video.src = window.URL.createObjectURL(localMediaStream);
+         //DEPRECIATION:
+         // video.src = window.URL.createObjectURL(localMediaStream);
+         video.srcObject = localMediaStream;
          video.play();
       })
       .catch(err => {
@@ -64,6 +66,34 @@ function rgbSplit(pixels) {
       pixels.data[i - 550] = pixels.data[i + 2] * 0.5 //blue
    }
    return pixels;
+}
+
+function greenScreen(pixels) {
+   const levels = {};
+
+   document.querySelectorAll('.rgb input').forEach((input) => {
+      levels[input.name] = input.value;
+   });
+
+   for (i = 0; i < pixels.data.length; i = i + 4) {
+      red = pixels.data[i + 0];
+      green = pixels.data[i + 1];
+      blue = pixels.data[i + 2];
+      alpha = pixels.data[i + 3];
+
+      if (red >= levels.rmin
+         && green >= levels.gmin
+         && blue >= levels.bmin
+         && red <= levels.rmax
+         && green <= levels.gmax
+         && blue <= levels.bmax) {
+         // take it out!
+         pixels.data[i + 3] = 0;
+      }
+   }
+
+   return pixels;
+
 }
 
 getVideo();
