@@ -220,6 +220,33 @@
 </style>
 
 <script>
+
+const triggers = document.querySelectorAll('.cool > li');
+const background = document.querySelector('.dropdownBackground');
+const nav = document.querySelector('.top');
+
+function handleEnter() {
+  // console.log('Enter!');
+  // 'this' is the list item
+  this.classList.add('trigger-enter');
+
+  // this won't work with regular function syntax because 'this' changes inside
+  // the function to window instead of the list item
+  // setTimeout(function () {
+  //   this.classList.add('trigger-enter-active');
+  // }, 150);
+
+  setTimeout( () => this.classList.add('trigger-enter-active'), 150);
+}
+
+function handleLeave() {
+  console.log('Leave!');
+}
+
+triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
+triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
+
+
 </script>
 
 </body>
