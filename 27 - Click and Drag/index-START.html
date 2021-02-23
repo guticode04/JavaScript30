@@ -39,12 +39,13 @@
 const slider = document.querySelector('.items');
 let isDown = false;
 let startX;
-let scrolleLeft;
+let scrollLeft;
 
 slider.addEventListener('mousedown', (e) => {
   isDown = true;
   slider.classList.add('active');
   startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
   console.log(startX);
 });
 
@@ -58,9 +59,14 @@ slider.addEventListener('mouseup', () => {
   slider.classList.remove('active');
 });
 
-slider.addEventListener('mousemove', () => {
+slider.addEventListener('mousemove', (e) => {
   //stop from running
   if(!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  // console.log({x, startX});
+  const walk = (x - startX) * 3;
+  slider.scrollLeft = scrollLeft - walk;
 
 });
 
